@@ -1,3 +1,4 @@
+## the shell script for running 10 alpine containers
 alp.sh
 #!/bin/bash
 count = 1
@@ -7,19 +8,22 @@ docker container run -d --name adhoc$count alpine fb.com
 ((count++))
 done
 
+##dockerfile
 
 FROM centos
 MAINTAINER yukta@yahoo.com
 run yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
-# download repo of EPEL
 run dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
 run dnf install --nobest docker-ce -y
 run yum install ansible -y
 
-docker build -t yuk .
+##building docker image
+docker build -t yuk:ansible .
 
-docker run -it --name firstc -v /var/run/docker.sock:/var/run/docker.sock yuk
+##running docker container
+docker run -it --name firstc yuk:ansible bash -v /var/run/docker.sock:/var/run/docker.sock 
 
+##create ansible playbook
 my.yml
 - hosts: localhost
    tasks:
@@ -28,6 +32,7 @@ my.yml
     - name: Running ten Containers
       shell: sh alp.sh
       
+##running the playbook
       ansible-playbook my.yml
-
+##view all the 10 containers
 docker ps -a
