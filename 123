@@ -1,5 +1,5 @@
 ## the shell script for running 10 alpine containers
-alp.sh
+## alp.sh
 #!/bin/bash
 count = 1
 while [ $count -le 11 ]
